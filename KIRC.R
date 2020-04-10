@@ -1,25 +1,15 @@
-install.packages(c('ggplo2', 'plyr', 'glmnet', 'survival', 'survminer', 'dplyr', 'survivalROC', 'circlize', 'survivalROC', 
-                   'plot3D', 'survRM2'))
+install.packages(c('ggplot2', 'plyr', 'glmnet', 'survival','dplyr', 'plot3D', 'readr'))
 if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
-BiocManager::install(c('ComplexHeatmap', 'copynumber', 'clusterProfiler', 'maftools', 'survcomp'))
+BiocManager::install(c('ComplexHeatmap', 'survcomp'))
 
 library(plyr)
 library(ggplot2)
 library(glmnet)
 library(survival)
-library(survminer)
 library(dplyr)
 library(ComplexHeatmap)
-library(circlize)
-library(survivalROC)
-library(copynumber)
-library(clusterProfiler)
-library(maftools)
-library(scatterplot3d)
 library(plot3D)
-library(survcomp)
-library(survRM2)
 library(gmodels)
 
 cancer <- "KIRC"
@@ -933,10 +923,9 @@ theme_surv_a <- theme_survminer(base_size = 30, font.main = c(35, "bold", "black
                                 legend ="top", font.legend = c(25, "bold", "black"))
 
 
-rt_exp <- read.table(file = "https://gdc.xenahubs.net/download/TCGA-KIRC.htseq_fpkm.tsv.gz", sep = "\t", header = TRUE, row.names = NULL, stringsAsFactors = FALSE)
-rt_cli <- read.table(file = "https://gdc.xenahubs.net/download/TCGA-KIRC.GDC_phenotype.tsv.gz", sep = "\t", header = TRUE, row.names = NULL, stringsAsFactors = FALSE, 
-                     fill = TRUE, quote = "", na.strings = "NA")
-rt_sur <- read.table(file = "https://gdc.xenahubs.net/download/TCGA-KIRC.survival.tsv.gz", sep = "\t", header = TRUE, row.names = NULL, stringsAsFactors = FALSE)
+rt_exp <- read_tsv(file = "https://gdc.xenahubs.net/download/TCGA-KIRC.htseq_fpkm.tsv.gz")
+rt_cli <- read_tsv(file = "https://gdc.xenahubs.net/download/TCGA-KIRC.GDC_phenotype.tsv.gz")
+rt_sur <- read_tsv(file = "https://gdc.xenahubs.net/download/TCGA-KIRC.survival.tsv.gz")
 rt_T <- split_tcga_tn(rt_exp[, -1], sam_type = "tumor")
 cancer_list <- GetExpSurCli(rt_T, rt_cli, rt_sur)
 rt_T_m <- cancer_list[[1]]
